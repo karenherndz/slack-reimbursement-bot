@@ -33,8 +33,8 @@ def update_total(user, amount):
 
 @app.route('/slack/events', methods=['POST'])
 def slack_events():
-    data = request.json
-    if 'challenge' in data:
+    data = request.get_json()
+    if data.get('type') == 'url_verification':
         return jsonify({'challenge': data['challenge']})
     
     if 'event' in data:

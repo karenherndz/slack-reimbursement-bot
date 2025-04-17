@@ -7,8 +7,17 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 app = Flask(__name__)
-client = WebClient(token=os.environ['SLACK_BOT_TOKEN'])
-channel_id = os.environ['SLACK_CHANNEL_ID']
+import os
+from slack_sdk import WebClient
+
+SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN')
+SLACK_CHANNEL_ID = os.environ.get('SLACK_CHANNEL_ID')
+
+if not SLACK_BOT_TOKEN or not SLACK_CHANNEL_ID:
+    raise ValueError("Missing SLACK_BOT_TOKEN or SLACK_CHANNEL_ID environment variables.")
+
+client = WebClient(token=SLACK_BOT_TOKEN)
+channel_id = SLACK_CHANNEL_ID
 
 # In-memory store for weekly totals
 weekly_totals = {}
